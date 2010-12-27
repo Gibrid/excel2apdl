@@ -271,7 +271,14 @@ Sub generalAction()
 End Sub
 
 Sub writeFile(ByRef filename)
-
+    'MsgBox filename
+    'MsgBox c
+    f = FreeFile
+    Open filename For Output As #f
+    Print #f, UserForm.TextBox1.Value
+    Close #f
+    'MsgBox filename
+    
 
 End Sub
 

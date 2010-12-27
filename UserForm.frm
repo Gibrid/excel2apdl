@@ -13,33 +13,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-'Private Sub UserForm_Click()
-    'Me.Height = Int(0.5 * 500)
-    'Me.Width = Int(0.5 * 750)
-    'showUF1
-'End Sub
-
 Private Sub Button1_Click()
     'showUF1
     generalAction
 End Sub
 
-
-Private Sub CommandButton2_Click()
-    'loop through the items in the listbox
-    For x = 0 To ListBox1.ListCount - 1
-        'if the intem is selected
-        If ListBox1.Selected(x) = True Then
-            'display the selected item
-            MsgBox ListBox1.List(x)
-        End If
-    Next x
-End Sub
-
-Private Sub CommandButton3_Click()
-    PopulateListBox
-End Sub
 
 Private Sub CommandButtonClose_Click()
     Unload Me
@@ -53,41 +31,40 @@ Private Sub CommandButtonCopyClip_Click()
 
 End Sub
 
-Private Sub ListBox1_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
-    ListBox1.RowSource = "=Лист1!A1:A5"
-End Sub
 
 Private Sub CommandButtonSaveFile_Click()
     Dim myFileDialog As FileDialog
-    
+                
     Set myFileDialog = Application.FileDialog(msoFileDialogSaveAs)
+    With myFileDialog
+    
+    .InitialFileName = Cells(4, 9)
+    .AllowMultiSelect = False
+    
+    '.Title = "Сохранить макрос"
+    '.ButtonName = "Save"
+    '.filters.Clear
+    '.filters.Add "ANSYS APDL macros", "*.mac*"
+    .FilterIndex = 18
+    '.filters.Clear
+    
+    End With
+    
     If myFileDialog.Show = -1 Then
-        MsgBox myFileDialog.Item
-    '    Call writeFile(myFileDialog.InitialFileName)
-        
+        Call writeFile(myFileDialog.SelectedItems(1))
     End If
         
 End Sub
 
-Private Sub TextBox1_Change()
-
+Private Sub CommandButtonSetDir_Click()
+    setDir
+    Me.TextBoxPath.Value = Cells(4, 9)
 End Sub
 
 Private Sub UserForm_Initialize()
-    Me.Caption = "excel2apdl converter (rough beta v0.91)"
-    'Me.BackColor = RGB(10, 25, 100)
+    Me.Caption = "excel2apdl converter (rough beta v0.92)"
     
+    Me.TextBoxPath.Value = Cells(4, 9)
     Me.TextBox1.ScrollBars = fmScrollBarsVertical
     
 End Sub
-    
-
-Private Sub UserForm_Resize()
-    msg = "Width: " & Me.Width & Chr(10) & "Height: " & Me.Height
-    MsgBox prompt:=msg, Title:="Resize Event"
-End Sub
-
-'Private Sub UserForm_Terminate()
-    'msg = "Now Unloading " & Me.Caption
-    'MsgBox prompt:=msg, Title:="TerminateEvent"
-'End Sub
